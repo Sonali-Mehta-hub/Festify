@@ -1,0 +1,202 @@
+body{
+     font-family: "Plus Jakarta Sans", sans-serif !important;
+     margin:0;
+     padding:0;
+     display:flex;
+     flex-direction: column;
+     min-height: 100vh;
+    background: linear-gradient(135deg, #faf6ff 0%, #fdfbff 100%);
+
+}
+
+.container{
+    flex:1;
+}
+
+.navbar{
+    height:4rem;
+}
+
+.logo{
+    color: rgb(161, 22, 161);
+    font-size: 2rem;
+}
+
+.navbar{
+    background: linear-gradient(135deg, #faf6ff 0%, #fdfbff 100%);
+    
+}
+
+.nav-link{
+    color:black !important;
+}
+
+/* footer */
+.f-info-links a{
+    text-decoration: none;
+    color:#222222;
+    margin-right: 0.7rem;
+    margin-left: 0.2rem;
+
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;    
+}
+
+.f-info-links,
+ .f-info-socials,
+ .f-info-brands{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info-socials i{
+    margin-right: 0.5rem;
+    font-size: 1.2rem
+}
+
+.f-info{
+text-align: center;
+height: 8rem;
+background-color: rgb(204, 193, 193);
+display:flex;flex-wrap: wrap;
+justify-content: center;
+align-items: space-evenly;
+}
+
+/*cards */
+
+.listing-card{
+    border: none !important;
+    margin-bottom: 2rem;
+    
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width:100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+
+}
+
+.card-text {
+    font-weight: 600 !important;
+}
+
+.listing-link{
+    text-decoration: none;
+}
+
+.card-img-overlay{
+    opacity:0;
+}
+
+.card-img-overlay:hover{
+    opacity:0.3;
+    background-color: white;
+}
+
+.add-btn{
+    background-color:rgb(161, 22, 161) !important;
+    color:white;
+    border:none !important;
+}
+.new-create{
+    color:rgb(161, 22, 161) !important;
+}
+
+/* show image */
+
+.show-img{
+     height:350px;
+     width:50px;
+}
+
+.btns{
+    display:flex;
+}
+.show-btn{
+    width:100px;
+    padding:2px;
+}
+
+/* Container card */
+.review-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 30px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headings */
+.review-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+    flex-direction: row-reverse; /* ensures correct left-to-right highlighting */
+}
+
+/* Textarea */
+.review-card textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    resize: vertical;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.review-card .file-upload:hover {
+    border-color: #007bff;
+}
+.review-card .file-upload input {
+    display: none;
+}
+
+/* Submit button */
+.review-card button {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.review-card button:hover {
+    background-color: #004bb5;
+}
+
+.img-preview {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+#map { 
+    height:300px;
+    width:300px;
+    border-radius:50%;
+ }

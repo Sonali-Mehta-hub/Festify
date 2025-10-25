@@ -1,0 +1,258 @@
+<%- layout("/layouts/boilerplate") %>
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* ---------------- HERO SECTION (UNCHANGED) ---------------- */
+  .hero {
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+    width:100%;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: url('https://images.unsplash.com/photo-1750003163474-c7578ff64162?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0') center/cover no-repeat;
+    animation: scrollBG 30s linear infinite;
+    z-index: -1;
+  }
+
+  @keyframes scrollBG {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    font-weight: 700;
+  }
+
+  .hero p {
+    font-size: 1.5rem;
+  }
+
+  .btn-lg {
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-light:hover {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  /* 🌍 Destination Highlights Section */
+#destinations {
+    padding: 80px 0;
+    background-color: #faf6ff;
+}
+
+#destinations h2 {
+    text-align: center;
+    color: rgb(121, 41, 121);
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+/* Destination Cards */
+.destination-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(121, 41, 121, 0.3);
+}
+
+.destination-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.destination-info {
+    padding: 20px;
+}
+
+.destination-info h4 {
+    font-weight: 700;
+    color: #6a1b9a;
+    margin-bottom: 10px;
+}
+
+.destination-info p {
+    color: #555;
+    font-size: 0.95rem;
+}
+  /* ---------------- ABOUT SECTION ---------------- */
+  .about {
+    background: linear-gradient(135deg, #faf6ff 0%, #fdfbff 100%);
+    padding: 6rem 0;
+  }
+
+  .about h2 {
+    color: rgb(121, 41, 121);
+    font-weight: 700;
+  }
+
+  .about p {
+    font-size: 1.1rem;
+    max-width: 850px;
+    margin: 1rem auto 0;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* ---------------- VALUE CARDS ---------------- */
+  .value-cards {
+    margin-top: 3rem;
+  }
+
+  .value-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+    box-shadow: 0 3px 15px rgba(121, 41, 121, 0.08);
+    transition: transform 0.3s ease;
+    border-top: 4px solid rgb(121, 41, 121);
+  }
+
+  .value-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .value-card i {
+    font-size: 2.5rem;
+    color: rgb(121, 41, 121);
+    margin-bottom: 1rem;
+  }
+
+  
+</style>
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <h1>Welcome to Festify</h1>
+    <p>Choose your Special Destination for Festivals and Events like never Before</p>
+
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4">
+      <a href="/listings" class="btn btn-warning btn-lg">Explore Destinations</a>
+      <a href="/signup" class="btn btn-outline-light btn-lg">Start Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- 🏝️ Destination Highlights Section -->
+<section id="destinations" class="container">
+    <h2>Destination Highlights</h2>
+    <div class="row g-4">
+
+        <!-- Destination 1 -->
+        <div class="col-md-4">
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1682743710558-b338ba285925?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Goa">
+                <div class="destination-info">
+                    <h4>Goa — Beachside Celebrations</h4>
+                    <b><i>Dance to the waves, enjoy beach parties, and celebrate life with sand between your toes</i></b>
+                    <p>Known for its lively beaches, sunset parties, music festivals (like Sunburn), and wedding resorts — Goa is the ultimate celebration hotspot.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Destination 2 -->
+        <div class="col-md-4">
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1575994532957-773da2f83eb1?q=80&w=771&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Jaipur">
+                <div class="destination-info">
+                    <h4>Udaipur — Royal Wedding & Heritage Events</h4>
+                    <b><i>Celebrate your special moments amid palaces, lakes, and royal heritage in the heart of Rajasthan.</i></b>
+                    <p>Called “The City of Lakes”, Udaipur offers regal palaces, lake-view venues, and royal vibes — perfect for destination weddings and luxury events.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Destination 3 -->
+        <div class="col-md-4">
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1590265788376-5d99eb11976e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Manali">
+                <div class="destination-info">
+                    <h4>Manali — Mountain Escapes & Festive Retreats</h4>
+                    <b><i>Host your dream event in the lap of the Himalayas with serene views and winter magic.</i></b>
+                    <p>Snowy hills, bonfires, cozy resorts — ideal for peaceful, nature-inspired celebrations or adventure-themed festivals.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= ABOUT SECTION ================= -->
+<section class="about text-center py-5" style="background-color: #faf6ff;">
+  <div class="container">
+    <h2 class="fw-bold mb-4" style="color: rgb(121, 41, 121);">About Festify</h2>
+    <p class="lead" style="max-width: 850px; margin: auto; color: #333;">
+      <strong>Festify</strong> is India’s one-stop destination finder for <b>weddings</b>, <b>engagements</b>,
+      <b>family gatherings</b>, and <b>grand celebrations</b>. Whether it’s a royal palace, beachfront, or hillside
+      retreat — we help you discover venues that match your occasion perfectly.
+      <br><br>
+      Our platform brings together <b>trusted event spaces</b> and <b>genuine community reviews</b>, making it easy
+      for users to <b>add their destinations</b>, set <b>custom prices</b>, and inspire others with their unique event ideas.
+      <br><br>
+      Celebrate smarter — discover, share, and plan your next destination with <b>Festify</b>.
+    </p>
+
+    <div class="row value-cards mt-5">
+      <div class="col-md-4">
+        <div class="value-card p-4 shadow-sm rounded-4">
+          <i class="fas fa-heart fa-2x mb-3" style="color: rgb(121, 41, 121);"></i>
+          <h5 class="fw-bold">Personalized Choices</h5>
+          <p>Filter destinations by type, theme, or vibe — crafted for your perfect celebration.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="value-card p-4 shadow-sm rounded-4">
+          <i class="fas fa-map-marked-alt fa-2x mb-3" style="color: rgb(121, 41, 121);"></i>
+          <h5 class="fw-bold">Verified Venues</h5>
+          <p>Every listing is user-added and curated for comfort, beauty, and celebration readiness.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="value-card p-4 shadow-sm rounded-4">
+          <i class="fas fa-comments fa-2x mb-3" style="color: rgb(121, 41, 121);"></i>
+          <h5 class="fw-bold">Community Reviews</h5>
+          <p>Share feedback, explore honest reviews, and help others plan meaningful events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

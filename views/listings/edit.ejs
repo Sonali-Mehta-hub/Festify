@@ -1,0 +1,75 @@
+<%- layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="container-fluid container">
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form 
+            method="POST" 
+            action="/listings/<%=listing._id%>?_method=PUT" 
+            class="bg-white p-4 rounded shadow-sm  needs-validation" 
+            novalidate
+            enctype="multipart/form-data">
+                <h1 class="text-center mb-4 text-purple  new-create"><b>Edit Your List</b></h1>
+        
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="title" class="form-label text-purple">Title</label>
+                            <input type="text" name="listing[title]" value="<%=listing.title%>" class="form-control" required>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">title should be valid</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="price" class="form-label text-purple">Price</label>
+                            <input type="text" name="listing[price]" value="<%=listing.price%>" class="form-control" required>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Price should be valid</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label text-purple">Description</label>
+                        <input type="text" name="listing[description]" value="<%=listing.description%>" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Description should be valid</div>
+                    </div>
+        
+                    <div class="mb-3">
+                        <img src="<%= originalImageUrl %>" alt="Listing Image" class="img-preview">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="image" class="form-label text-purple">Image URL</label>
+                        <input type="file" name="listing[image]" class="form-control">
+                        <div class="valid-feedback">Looks good!</div>
+            
+                    </div>
+        
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="location" class="form-label text-purple">Location</label>
+                            <input type="text" name="listing[location]" value="<%=listing.location%>" class="form-control" required>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Location should be valid</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="country" class="form-label text-purple">Country</label>
+                            <input type="text" name="listing[country]" value="<%=listing.country%>" class="form-control" required>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Country should be valid</div>
+                        </div>
+                    </div>
+        
+                    <div class="text-center">
+                        <button class="btn btn-dark px-4  add-btn">Edit & Save</button>
+                        <br><br>
+                    </div>
+        
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>

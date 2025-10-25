@@ -1,0 +1,51 @@
+<%- layout("/layouts/boilerplate") %>
+
+<div class="container-fluid container">
+
+<div class="row">
+    <div class="col-8 offset-2  mt-5">
+        <form action="/signup" method="post" class="needs-validation" novalidate>
+            <h1 class="text-center mb-4 text-purple  new-create"><b>SignUp</h1>
+
+            <div class="row mb-3 offset-3 " >
+                <div class="col-md-8">
+                    <label for="title" class="form-label text-purple">Username</label>
+                    <input type="text" name="username" placeholder="username" class="form-control mb-2" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">username should be valid</div>
+
+                </div>
+
+                <div class="col-md-8">
+                    <label for="title" class="form-label text-purple">Email</label>
+                    <input type="email" name="email" placeholder="email" class="form-control mb-2" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">email should be valid</div>
+
+                </div>
+
+                <div class="col-md-8">
+                    <label for="title" class="form-label text-purple">Password</label>
+                    <input type="password" name="password" placeholder="password" class="form-control mb-2" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">password should be valid</div>
+
+                </div>
+            </div>
+
+            <div class="text-center">
+               <button class="btn btn-success add-btn px-4">Submit</button>
+               <br><br>
+               <p class="ms-8">
+               Already have an account?
+               <a href="/login" class="text-purple fw-bold" style="text-decoration: none;">
+               Login here
+               </a>
+              </p>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</div>
