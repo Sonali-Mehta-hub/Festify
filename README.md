@@ -53,4 +53,47 @@ Users can explore curated locations, apply category filters, and view high-quali
 ---
 
 ## 📁 Project Structure
+Festify/
+├── controllers/        # Route handlers / logic
+├── init/               # Initialization files
+├── models/             # Mongoose models
+├── public/             # Static assets (CSS, JS, Images)
+├── routes/             # Express routes
+├── utils/              # Utility functions
+├── views/              # EJS templates (frontend UI)
+├── .gitignore          # Git ignore rules
+├── app.js              # Main server file
+├── cloudConfig.js      # Cloudinary configuration
+├── middleware.js       # Custom middlewares
+├── schema.js           # Validation Schemas
+├── package.json        # Project metadata + dependencies
+└── README.md           # Project documentation
+
+
+### 🏠 Home Page
+![Home Page](./screenshots/home.png)
+
+---
+
+### 🔐 Signup Page
+![Signup Page](./screenshots/signup.png)
+
+---
+
+### 🗂 Destinations Listing Page
+![Listing Page](./screenshots/listings.png)
+
+---
+
+### 🏰 Destination Detail Page
+![Details Page](./screenshots/details.png)
+
+---
+
+## 🛠 Installation & Setup
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/Sonali-Mehta-hub/Festify.git
+cd Festify
 
