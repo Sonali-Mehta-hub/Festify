@@ -71,22 +71,22 @@ Festify/
 
 
 ### 🏠 Home Page
-![Home Page](./screenshots/home.png)
+![Home Page](./home.png)
 
 ---
 
 ### 🔐 Signup Page
-![Signup Page](./screenshots/signup.png)
+![Signup Page](./signup.png)
 
 ---
 
 ### 🗂 Destinations Listing Page
-![Listing Page](./screenshots/listings.png)
+![Listing Page](./listings.png)
 
 ---
 
 ### 🏰 Destination Detail Page
-![Details Page](./screenshots/details.png)
+![Details Page](./details.png)
 
 ---
 
