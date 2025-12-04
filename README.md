@@ -90,10 +90,4 @@ Festify/
 
 ---
 
-## 🛠 Installation & Setup
-
-### 1️⃣ Clone the repository
-```bash
-git clone https://github.com/Sonali-Mehta-hub/Festify.git
-cd Festify
 
