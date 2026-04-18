@@ -18,6 +18,7 @@ const Session = require("express-session");
 const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const localStrategy = require("passport-local");
 const User = require("./models/users.js");
 
@@ -82,9 +83,47 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use( new localStrategy(User.authenticate()));
 
+// Google OAuth Strategy
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      let user = await User.findOne({ googleId: profile.id });
+      if (user) {
+        return done(null, user);
+      } else {
+        user = new User({
+          googleId: profile.id,
+          displayName: profile.displayName,
+          email: profile.emails[0].value,
+          image: profile.photos[0].value,
+          username: profile.displayName || profile.emails[0].value.split('@')[0] // Set username for passport-local-mongoose
+        });
+        await user.save();
+        return done(null, user);
+      }
+    } catch (err) {
+      return done(err, null);
+    }
+  }
+));
+
 //serialize (store) & deserialize(delete)
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
 
 
 

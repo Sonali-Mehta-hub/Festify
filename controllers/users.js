@@ -52,3 +52,11 @@ module.exports.logout = (req, res, next)=>{
     });
 };
 
+// Google OAuth callback
+module.exports.googleAuthCallback = (req, res) => {
+    req.flash("success", "Welcome back to Wanderlust!");
+    const redirectUrl = res.locals.redirectUrl || "/listings";
+    delete req.session.redirectUrl;
+    res.redirect(redirectUrl);
+};
+
