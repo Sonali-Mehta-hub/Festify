@@ -2,6 +2,8 @@
 
 Festify helps people discover and share destinations for festivals, weddings,
 and other celebrations.
+Live Demo: https://festify-fx0n.onrender.com/
+
 
 ## Stack
 
