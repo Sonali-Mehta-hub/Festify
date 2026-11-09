@@ -10,8 +10,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'wnaderlust_DEV',
-    allowerdFormats: ['png','jpg','jpeg'],// supports promises as well
+    folder: 'festify',
+    allowed_formats: ['png', 'jpg', 'jpeg'],
   },
 });
 

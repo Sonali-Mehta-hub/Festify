@@ -1,175 +1,154 @@
 require("dotenv").config();
 
-if (process.env.NODE_ENV !== "production") {
-    console.log(process.env.SECRET);
-}
-
-const express =  require("express");
-const app = express();
-const mongoose =require("mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
 const path = require("path");
-const methodOverride= require("method-override");
-const EjsMate = require("ejs-mate");
-const ExpressError =require("./utils/ExpressError.js");
-const listingsRoute = require("./routes/listing.js");
-const reviewsRoute = require("./routes/review.js");
-const userRoute = require("./routes/user.js");
-const Session = require("express-session");
-const MongoStore = require('connect-mongo');
-const flash = require("connect-flash");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const localStrategy = require("passport-local");
+const LocalStrategy = require("passport-local");
 const User = require("./models/users.js");
+const apiRoutes = require("./routes/api.js");
 
-
-
-
-app.set("views", path.join(__dirname,"views"));
-app.set("view engine", "ejs");
-app.use(express.urlencoded({extended:true}));
-app.use(methodOverride("_method"));
-app.engine('ejs', EjsMate);
-app.use(express.static(path.join(__dirname, "public")));
-
-
-// database connectivity
-let port= 8080;
+const app = express();
 const dbUrl = process.env.ATLASDB_URL;
+const isProduction = process.env.NODE_ENV === "production";
 
-main()
-.then((res)=>{
-    console.log(res);
-})
-.catch(err => console.log(err));
+app.set("trust proxy", 1);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-async function main() {
-  await mongoose.connect(dbUrl);
+const sessionStore = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: { secret: process.env.SECRET },
+  touchAfter: 24 * 3600,
+});
+sessionStore.on("error", (error) => {
+  console.error("MongoDB session store error:", error);
+});
 
-};
-
-
-const store = MongoStore.create({
-    mongoUrl:dbUrl,
-    crypto: {
-        secret: process.env.SECRET,
+app.use(
+  session({
+    store: sessionStore,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: isProduction,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     },
-    touchAfter: 24 * 3600
-});
+  })
+);
 
-store.on("error",()=>{
-   console.log("Error in mongo store", err);
-});
+passport.use(new LocalStrategy(User.authenticate()));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL:
+        process.env.GOOGLE_CALLBACK_URL ||
+        (isProduction
+          ? "https://festify-fx0n.onrender.com/auth/google/callback"
+          : "http://localhost:5173/auth/google/callback"),
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await User.findOne({ googleId: profile.id });
+        if (!user) {
+          const email = profile.emails?.[0]?.value;
+          if (!email) {
+            return done(new Error("Google account did not provide an email"));
+          }
 
-const SessionOptions ={
-    store,
-    secret :process.env.SECRET,
-    resave:false,
-    saveUninitialized:true,
-    cookie:{
-        expires:Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge:7 * 24 * 60 * 60 * 1000,
-        httpOnly:true
-    } 
-};
-
-
-
-app.use(Session(SessionOptions));
-app.use(flash());
-
-//configure authentication through passport
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use( new localStrategy(User.authenticate()));
-
-// Google OAuth Strategy
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://festify-fx0n.onrender.com/auth/google/callback"
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      let user = await User.findOne({ googleId: profile.id });
-      if (user) {
+          user = await User.create({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            email,
+            image: profile.photos?.[0]?.value,
+            username: profile.displayName || email.split("@")[0],
+          });
+        }
         return done(null, user);
-      } else {
-        user = new User({
-          googleId: profile.id,
-          displayName: profile.displayName,
-          email: profile.emails[0].value,
-          image: profile.photos[0].value,
-          username: profile.displayName || profile.emails[0].value.split('@')[0] // Set username for passport-local-mongoose
-        });
-        await user.save();
-        return done(null, user);
+      } catch (error) {
+        return done(error);
       }
-    } catch (err) {
-      return done(err, null);
     }
-  }
-));
+  )
+);
 
-//serialize (store) & deserialize(delete)
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
-
+passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
+    done(null, await User.findById(id));
+  } catch (error) {
+    done(error);
   }
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
 
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => res.redirect("/listings")
+);
 
-app.use((req,res,next)=>{
-    res.locals.success =req.flash("success");
-    res.locals.error =req.flash("error");
-    res.locals.currUser = req.user;
-    next();
+app.use("/api", apiRoutes);
+app.use("/api", (req, res) => {
+  res.status(404).json({ error: "API endpoint not found." });
 });
 
-//home route
-app.get("/",(req, res)=>{
-    res.render("home"); // assuming req.user holds logged-in user
+const clientDist = path.join(__dirname, "client", "dist");
+app.use(express.static(clientDist));
+app.use((req, res, next) => {
+  if (req.method !== "GET") {
+    return next();
+  }
+  res.sendFile(path.join(clientDist, "index.html"), (error) => {
+    if (error) {
+      next(error);
+    }
+  });
 });
 
-//listing router
-app.use("/listings", listingsRoute);
-//review router
-app.use("/listings/:id/reviews", reviewsRoute);
-//user route
-app.use("/",userRoute);
-
-
-app.get("/registerUser", async(req, res)=>{
-    let fakeUser = new User({
-        email:"student@gmail.com",
-        username:"delta-studen",
+app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+  const status = error.statusCode || error.status || 500;
+  if (req.path.startsWith("/api")) {
+    return res.status(status).json({
+      error: status >= 500 ? "Something went wrong" : error.message,
     });
-    let newUser = await User.register(fakeUser,"helloworld");
-    res.send(newUser);
-})
-
-
-// Catch-all for unknown routes
-app.use((req,res,next)=>{
-   next(new ExpressError(404,"page not found"));
+  }
+  return res.status(status).send(error.message || "Something went wrong");
 });
 
+async function start() {
+  if (!dbUrl || !process.env.SECRET) {
+    throw new Error("ATLASDB_URL and SECRET must be set in the environment.");
+  }
+  await mongoose.connect(dbUrl);
+  const port = process.env.PORT || 8080;
+  app.listen(port, () => {
+    console.log(`Festify server listening on port ${port}`);
+  });
+}
 
-app.use((err, req, res, next) => {
-    const { statusCode = 500, message = "Something went wrong" } = err;
-    res.status(statusCode).render("error.ejs",{err});
-    // res.status(statusCode).send(message);
-});
+if (require.main === module) {
+  start().catch((error) => {
+    console.error("Failed to start Festify:", error);
+    process.exitCode = 1;
+  });
+}
 
-
-app.listen(port,()=>{
-    console.log(`server is  running : http://localhost:8080`);
-});
+module.exports = app;

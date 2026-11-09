@@ -1,93 +1,72 @@
-# 🎉 Festify — Event Destination Finder Web App
+# Festify
 
-![Node](https://img.shields.io/badge/Node.js-18+-green)
-![Express](https://img.shields.io/badge/Express.js-Backend-black)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen)
-![EJS](https://img.shields.io/badge/EJS-Templating-orange)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-Image%20Storage-blue)
-![Render](https://img.shields.io/badge/Deploy-Render-purple)
-![Status](https://img.shields.io/badge/Project%20Status-Active-success)
+Festify helps people discover and share destinations for festivals, weddings,
+and other celebrations.
 
-Festify is a modern web application that helps users discover the **best destinations for organizing festivals, weddings, parties, and luxury events**.  
-Users can explore curated locations, apply category filters, and view high-quality venue details. Admins can add new destinations with images and descriptions.
+## Stack
 
-🌐 **Live Demo:**  
-👉 https://festify-fx0n.onrender.com/
+- React and Vite frontend (`client/`)
+- Express REST API and session authentication
+- MongoDB Atlas with Mongoose
+- Cloudinary image uploads
+- Passport local and Google OAuth authentication
 
----
+## Run locally
 
-## 🚀 Features
+1. Install Node.js 22.15 or newer and install dependencies:
 
-### 👤 User Features
-- User Registration & Login  
-- Session-based Authentication  
-- Explore curated event destinations  
-- Apply category filters  
-- View detailed venue information  
+   ```sh
+   npm install
+   ```
 
-### 🛠️ Admin Features
-- Admin dashboard  
-- Add new destinations  
-- Upload images  
-- Edit / delete listings  
+2. Set these values in the root `.env` file:
 
-### 🧭 Upcoming Features
-- Booking system  
-- Payment gateway  
-- Wishlist / Reviews  
-- Google login  
+   ```env
+   ATLASDB_URL=your-mongodb-atlas-connection-string
+   SECRET=a-long-random-session-secret
+   GOOGLE_CLIENT_ID=your-google-oauth-client-id
+   GOOGLE_CLIENT_SECRET=your-google-oauth-client-secret
+   CLOUD_NAME=your-cloudinary-cloud-name
+   CLOUD_API_KEY=your-cloudinary-api-key
+   CLOUD_API_SECRET=your-cloudinary-api-secret
+   ```
 
----
+   Google OAuth and Cloudinary credentials are needed only for those
+   integrations. Keep `.env` private and never commit it.
 
-## 🧰 Tech Stack
+3. In Google Cloud, add
+   `http://localhost:5173/auth/google/callback` as an authorized redirect URI
+   if you want to test Google sign-in locally.
 
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | EJS, CSS |
-| **Backend** | Node.js, Express.js |
-| **Database** | MongoDB |
-| **Authentication** | Sessions |
-| **Image Storage** | Cloudinary |
-| **Deployment** | Render |
+4. Start the API and React development server:
 
----
+   ```sh
+   npm run dev
+   ```
 
-## 📁 Project Structure
-Festify/
-├── controllers/        # Route handlers / logic
-├── init/               # Initialization files
-├── models/             # Mongoose models
-├── public/             # Static assets (CSS, JS, Images)
-├── routes/             # Express routes
-├── utils/              # Utility functions
-├── views/              # EJS templates (frontend UI)
-├── .gitignore          # Git ignore rules
-├── app.js              # Main server file
-├── cloudConfig.js      # Cloudinary configuration
-├── middleware.js       # Custom middlewares
-├── schema.js           # Validation Schemas
-├── package.json        # Project metadata + dependencies
-└── README.md           # Project documentation
+   Open `http://localhost:5173`. Vite forwards `/api` and `/auth` requests to
+   the Express server on port 8080.
 
+## Production
 
-### 🏠 Home Page
-![Home Page](./home.png)
+Build the React app and start the Express server:
 
----
+```sh
+npm run build
+npm start
+```
 
-### 🔐 Signup Page
-![Signup Page](./signup.png)
+For Render, use `npm install --include=dev && npm run build` as the build command and
+`npm start` as the start command. Set the environment variables above in the
+Render service settings. The production Google OAuth redirect URI is
+`https://festify-fx0n.onrender.com/auth/google/callback`; keep it registered in
+Google Cloud and set `GOOGLE_CALLBACK_URL` if the deployed URL changes.
 
----
+## API overview
 
-### 🗂 Destinations Listing Page
-![Listing Page](./listings.png)
-
----
-
-### 🏰 Destination Detail Page
-![Details Page](./details.png)
-
----
-
-
+- `GET /api/me` — current session user
+- `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`
+- `GET /api/listings`, `GET /api/listings/:id`
+- `POST /api/listings`, `PUT /api/listings/:id`, `DELETE /api/listings/:id`
+- `POST /api/listings/:id/reviews`
+- `DELETE /api/listings/:id/reviews/:reviewId`
